@@ -546,6 +546,50 @@
                     </div>
                 </div>
 
+
+    <br> <br>      
+         
+<!-- REVIEW SECTION START -->
+
+<h2 class="text-2xl font-bold text-center mb-6 dark:text-white">
+  Leave a Review
+</h2>
+
+<form id="reviewForm" class="max-w-md mx-auto space-y-4">
+
+  <!-- Name -->
+  <input 
+    type="text" 
+    id="name"
+    placeholder="Your Name"
+    required
+    class="w-full p-3 rounded border border-gray-300 
+           text-black placeholder-gray-500
+           focus:outline-none focus:ring-2 focus:ring-black"
+  >
+
+  <!-- Review Message (ONLY THIS TEXT BLACK) -->
+  <textarea 
+    id="message"
+    placeholder="Your Review"
+    required
+    class="w-full p-3 rounded border border-gray-300 
+           text-black placeholder-gray-500
+           focus:outline-none focus:ring-2 focus:ring-black"
+  ></textarea>
+
+  <!-- Submit Button -->
+  <button 
+    type="submit"
+    class="w-full bg-black text-white p-3 rounded hover:bg-gray-800 transition"
+  >
+    Submit Review
+  </button>
+
+</form>
+
+<!-- REVIEW SECTION END -->
+
                 <!-- Controls -->
                 <button onclick="prevSlide()" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-md flex items-center justify-center text-gray-600 dark:text-gray-300 hover:text-gold-500 transition-colors">
                     <i class="fas fa-chevron-left"></i>
@@ -845,6 +889,50 @@ function openVideo() {
 function closeVideo() {
   document.getElementById("videoModal").style.display = "none";
 }
+</script>
+
+
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBrz4abIiABvuFFUG7GJ9RrMfF5ifhEXZo",
+    authDomain: "vishuraportfolio.firebaseapp.com",
+    projectId: "vishuraportfolio",
+    storageBucket: "vishuraportfolio.firebasestorage.app",
+    messagingSenderId: "475381875934",
+    appId: "1:475381875934:web:d46245ba3175881e79ee4f"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Review form submit
+  const form = document.getElementById("reviewForm");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const message = document.getElementById("message").value;
+
+    try {
+      await addDoc(collection(db, "reviews"), {
+        name: name,
+        message: message,
+        createdAt: new Date()
+      });
+
+      alert("Review added successfully!");
+      form.reset();
+    } catch (error) {
+      alert("Error adding review");
+      console.error(error);
+    }
+  });
 </script>
 
 </body>
